@@ -1,0 +1,13 @@
+# everything not needed
+app/*
+exp/*
+out/*
+.template
+build
+clean
+CMakeLists.txt
+debug
+gather
+memcheck.supp
+require
+run
