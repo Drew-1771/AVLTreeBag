@@ -11,3 +11,5 @@ gather
 memcheck.supp
 require
 run
+# future build scripts
+*.bat
