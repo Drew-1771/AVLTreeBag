@@ -97,7 +97,7 @@ private:
     Node* RotateLeft(Node* node);
     Node* addRecursive(Node* node, const ElementType& element);
     bool containsRecursive(const Node* node, const ElementType& element) const;
-    int amountRecursive(const Node* node) const;
+    int amountRecursive(const Node* node, const ElementType& element) const;
     void preorderRecursive(VisitFunction visit, const Node* node) const;
     void inorderRecursive(VisitFunction visit, const Node* node) const;
     void postorderRecursive(VisitFunction visit, const Node* node) const;
@@ -268,7 +268,7 @@ typename AVLBag<ElementType>::Node* AVLBag<ElementType>::addRecursive(Node* node
     if (node == nullptr)
     {
         nodes += 1;
-        return new Node{element, nullptr, nullptr};
+        return new Node{element, nullptr, nullptr, 1};
     }
     if (element > node->data)
     {
@@ -281,7 +281,7 @@ typename AVLBag<ElementType>::Node* AVLBag<ElementType>::addRecursive(Node* node
     else
     {
         // if we run into a duplicate
-        node.amount += 1;
+        node->amount += 1;
         return node;
     }
     // This is here to save time. Because we will only ever have to rebalance once,
@@ -389,16 +389,28 @@ int AVLBag<ElementType>::height() const noexcept
 
 
 template <typename ElementType>
-int AVLBag<ElementType>::amountRecursive(const Node* node) const
+int AVLBag<ElementType>::amountRecursive(const Node* node, const ElementType& element) const
 {
-
+    if (node == nullptr)
+    {
+        return 0;
+    }
+    if (element < node->data)
+    {
+        return amountRecursive(node->left, element);
+    }
+    if (element > node->data)
+    {
+        return amountRecursive(node->right, element);
+    }
+    return node->amount;
 }
 
 
 template <typename ElementType>
 int AVLBag<ElementType>::amount(const ElementType& element) const
 {
-
+    return amountRecursive(origin, element);
 }
 
 
@@ -416,6 +428,7 @@ void AVLBag<ElementType>::preorderRecursive(VisitFunction visit, const Node* nod
     }
     return;
 }
+
 
 template <typename ElementType>
 void AVLBag<ElementType>::preorder(VisitFunction visit) const

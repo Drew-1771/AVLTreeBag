@@ -205,6 +205,12 @@ TEST(AVLBagTests, doesNotContainElementsNotAdded)
 
 TEST(AVLBagTests, canAddDuplicates)
 {
+    AVLBag<std::string> s0;
+    s0.add("origin");
+    s0.add("origin");
+    ASSERT_EQ(s0.amount("origin"), 2);
+    ASSERT_EQ(s0.amount("false"), 0);
+
     AVLBag<int> s1;
     for (int x = 0; x < 10; ++x)
     {
@@ -216,16 +222,27 @@ TEST(AVLBagTests, canAddDuplicates)
     }
     ASSERT_EQ(3, s1.height());
     ASSERT_EQ(10, s1.size());
+    for (int x = 0; x < 10; ++x)
+    {
+        ASSERT_EQ(s1.amount(x), 2);
+    }
     AVLBag<int> s2;
     for (int x = 0; x < 100; ++x)
     {
-        s1.add(x);
+        s2.add(x);
     }
+    for (int y = 0; y < 4; ++y)
+    {
+        for (int x = 0; x < 100; ++x)
+        {
+            s2.add(x);
+        }
+    }
+    ASSERT_EQ(100, s2.size());
     for (int x = 0; x < 100; ++x)
     {
-        s1.add(x);
+        ASSERT_EQ(s2.amount(x), 5);
     }
-    ASSERT_EQ(100, s1.size());
 }
 
 
