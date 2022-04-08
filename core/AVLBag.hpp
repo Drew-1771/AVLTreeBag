@@ -4,7 +4,6 @@
 
 #include <functional>
 #include <algorithm>
-#include <iostream>
 
 template <typename ElementType>
 class AVLBag
